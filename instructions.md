@@ -392,6 +392,20 @@ Antes do commit:
 - verificar se nenhuma credencial ou token foi incluído;
 - confirmar que `requirements.txt` está atualizado.
 
+```markdown
+# CI/CD Pipeline
+
+A suíte é executada automaticamente pelo GitHub Actions (`.github/workflows/e2e-tests.yml`).
+
+Gatilhos: `push` e `pull_request` em `main`, além de execução manual (`workflow_dispatch`).
+
+A pipeline reproduz os mesmos comandos definidos em "Validação final" e "Definition of Done":
+
+```bash
+pytest tests --collect-only -v
+pytest tests -v --tb=short --json-report --json-report-file=reports/test_results.json
+```
+
 ## Regra principal
 
 A IA deve ajudar a encontrar problemas reais, melhorar a qualidade dos testes e reduzir manutenção.

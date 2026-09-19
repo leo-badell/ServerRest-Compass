@@ -96,6 +96,30 @@ Essa informação pode ajudar a localizar cenários E2E mais custosos e oportuni
 
 A duração de um teste, entretanto, pode ser influenciada pela rede, ambiente, criação e remoção de massas, autenticação e tempo de resposta da API. Portanto, um teste mais lento não representa, isoladamente, um problema de performance do endpoint.
 
+## 🔄 Pipeline CI/CD (GitHub Actions)
+
+O projeto possui uma pipeline de integração contínua definida em `.github/workflows/e2e-tests.yml`, disparada em:
+
+- `push` na branch `main`;
+- `pull_request` para a branch `main`;
+- execução manual (`workflow_dispatch`).
+
+Etapas executadas:
+
+```text
+Checkout
+   ↓
+Setup Python 3.12
+   ↓
+pip install -r requirements.txt
+   ↓
+pytest tests --collect-only -v
+   ↓
+pytest tests -v --tb=short --json-report --json-report-file=reports/test_results.json
+   ↓
+Upload do artefato test-results
+```
+
 ## Boas práticas aplicadas
 
 - Separação de responsabilidades.
@@ -118,7 +142,6 @@ A duração de um teste, entretanto, pode ser influenciada pela rede, ambiente, 
 - relatório HTML;
 - markers `smoke`, `regression` e `negative`;
 - cobertura com `pytest-cov`, quando aplicável;
-- pipeline CI/CD;
 - logging estruturado;
 - validação de contrato OpenAPI;
 - execução paralela após garantir isolamento das massas.
